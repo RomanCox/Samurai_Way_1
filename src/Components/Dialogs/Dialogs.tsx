@@ -1,41 +1,28 @@
 import React from 'react';
 import s from './Dialogs.module.css';
-import state from './../../Redux/state'
-import {NavLink} from "react-router-dom";
+import {DialogItem} from "./DialogItem";
+import {MessageItem} from "./MessageItem";
+import {DialogPageType} from "../../Redux/store";
 
-type DialogItemPropsType = {
-    id: number
-    name: string
-}
-type MessageItemPropsType = {
-    message: string
-}
+type DialogsPropsType = {
+    dialogsPage: DialogPageType,
+    addMessage: () => void,
+    updateNewMessageText: (newText: string) => void,
+};
 
-const DialogItem = (props: DialogItemPropsType) => {
-    let path = '/dialogs' + props.id
-    return (
-        <div className={s.dialogs + ' ' + s.active}>
-            <NavLink to={path}>{props.name}</NavLink>
-        </div>
-    )
-}
+const Dialogs = (props: DialogsPropsType) => {
 
-const MessageItem = (props: MessageItemPropsType) => {
-    return (
-        <div className={s.dialog}>
-            {props.message}
-        </div>
-    )
-}
+    let state = props.dialogsPage
+    let dialogsElement = state.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>);
+    let messagesElement = state.messages.map(m => <MessageItem message={m.message}/>);
+    let NewMessageElement = React.createRef<HTMLTextAreaElement>();
+    let onClickHandler = () => {
+        props.addMessage();
+    };
 
-const Dialogs = () => {
-
-    let dialogsElement = state.dialogsPage.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>);
-    let messagesElement = state.dialogsPage.messages.map(m => <MessageItem message={m.message}/>);
-    let NewMessageElement = React.createRef<HTMLTextAreaElement>()
-    let addMessage = () => {
+    let onChangeHandler = () => {
         if (NewMessageElement.current) {
-            alert(NewMessageElement.current.value)
+            props.updateNewMessageText(NewMessageElement.current.value)
         }
     };
 
@@ -44,13 +31,22 @@ const Dialogs = () => {
             <div className={s.dialogsItems}>
                 {dialogsElement}
             </div>
-            <div className={s.messages}>
-                {messagesElement}
-                <textarea ref={NewMessageElement}></textarea>
-                <button onClick={addMessage}>Add Message</button>
+            <div>
+                <div className={s.messages}>
+                    {messagesElement}
+                    <textarea
+                        placeholder='Enter your message'
+                        ref={NewMessageElement}
+                        onChange={onChangeHandler}
+                        value={props.dialogsPage.newMessageText}
+                    />
+                </div>
+                <div>
+                    <button onClick={onClickHandler}>Send</button>
+                </div>
             </div>
         </div>
     )
-}
+};
 
 export default Dialogs;

@@ -1,8 +1,9 @@
 import React from 'react';
-import MyPosts from './MyPosts/MyPosts'
+import {RootStoreType} from "../../Redux/store";
+import MyPostsContainer from "./MyPosts/MyPostsContainer";
 
 type ProfileType = {
-    message: string
+    store: RootStoreType,
 }
 
 const Profile: React.FC<ProfileType> = (props) => {
@@ -15,7 +16,9 @@ const Profile: React.FC<ProfileType> = (props) => {
                 ava + description
             </div>
             <div>
-                <MyPosts message={props.message}/>
+                <MyPostsContainer
+                    store={props.store}
+                />
             </div>
         </div>
     )
