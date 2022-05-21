@@ -1,9 +1,15 @@
 import {v4 as uuidv4} from "uuid";
-import {ActionType, DialogPageType} from "./store";
+import {ActionType} from "./reduxStore";
 
-const ADD_MESSAGE = 'ADD-MESSAGE';
-const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
-
+export type MessageType = {
+    id: string,
+    message: string,
+};
+export type DialogType = {
+    id: string,
+    name: string,
+};
+export type DialogPageType = typeof initialState;
 export const addMessageAC = () => ({type: 'ADD-MESSAGE'} as const);
 export const updateNewMessageTextAC = (newText: string) => ({type: 'UPDATE-NEW-MESSAGE-TEXT', newText: newText} as const);
 
@@ -15,33 +21,39 @@ let initialState = {
         {id: uuidv4(), name: 'Sasha'},
         {id: uuidv4(), name: 'Viktor'},
         {id: uuidv4(), name: 'Valera'}
-    ],
+    ] as Array<DialogType>,
     messages: [
         {id: uuidv4(), message: 'Hi'},
         {id: uuidv4(), message: 'How is you project'},
         {id: uuidv4(), message: 'Yo'},
         {id: uuidv4(), message: 'Yo'},
         {id: uuidv4(), message: 'Yo'}
-    ],
+    ] as Array<MessageType>,
     newMessageText: '',
-}
+};
 
-const dialogsReducer = (state: DialogPageType = initialState, action: ActionType) => {
+const dialogsReducer = (state: DialogPageType = initialState, action: ActionType): DialogPageType => {
     switch (action.type) {
-        case ADD_MESSAGE:
+        case 'ADD-MESSAGE': {
             let newMessage = {
                 id: uuidv4(),
                 message: state.newMessageText,
             };
-            state.messages.push(newMessage);
-            state.newMessageText = '';
-            return state;
-        case UPDATE_NEW_MESSAGE_TEXT:
-            state.newMessageText = action.newText;
-            return state;
+            return {
+                ...state,
+                newMessageText: '',
+                messages: [...state.messages, newMessage]
+            };
+        }
+        case 'UPDATE-NEW-MESSAGE-TEXT': {
+            return {
+                ...state,
+                newMessageText: action.newText,
+            };
+        }
         default:
             return state;
     }
-}
+};
 
 export default dialogsReducer;

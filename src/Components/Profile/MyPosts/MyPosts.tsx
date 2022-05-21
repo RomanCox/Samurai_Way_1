@@ -1,24 +1,17 @@
 import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post'
-import {PostType} from "../../../Redux/store";
+import {MyPostsPropsType} from "./MyPostsContainer";
 
-type MyPostsType = {
-    posts: Array<PostType>
-    newPostText: string,
-    addPost: () => void,
-    updateNewPostText: (newText: string) => void,
-}
+const MyPosts = (props: MyPostsPropsType) => {
 
-const MyPosts: React.FC<MyPostsType> = (props) => {
-
-    let postsElements = props.posts.map(p => <Post post={p.message} likesCount={p.likesCount}/>);
+    let postsElements = props.posts.map(p => <Post key={p.id} post={p.message} likesCount={p.likesCount}/>);
 
     let newPostElement = React.createRef<HTMLTextAreaElement>();
 
     let addPostHandler = () => {
         props.addPost();
-    }
+    };
 
     let postOnChange = () => {
         if (newPostElement.current) {

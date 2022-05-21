@@ -1,6 +1,13 @@
 import {v4 as uuidv4} from "uuid";
-import {ActionType, ProfilePageType} from "./store";
+import {ActionType} from "./reduxStore";
 
+export type PostType = {
+    id: string,
+    message: string,
+    likesCount: number,
+}
+
+export type ProfilePageType = typeof initialState;
 export const addPostAC = () => ({type: 'ADD-POST'} as const);
 export const updateNewPostTextAC = (newText: string) => ({type: 'UPDATE-NEW-POST-TEXT', newText: newText} as const);
 
@@ -10,11 +17,12 @@ let initialState = {
         {id: uuidv4(), message: 'It\'s my first post', likesCount: 11},
         {id: uuidv4(), message: 'BlaBla', likesCount: 11},
         {id: uuidv4(), message: 'DaDa', likesCount: 11}
-    ],
+    ] as Array<PostType>,
     newPostText: '',
-}
+};
 
-const profileReducer = (state: ProfilePageType = initialState, action: ActionType) => {
+const profileReducer = (state: ProfilePageType = initialState, action: ActionType): ProfilePageType => {
+
     switch (action.type) {
         case 'ADD-POST':
             let newPost = {
@@ -22,15 +30,19 @@ const profileReducer = (state: ProfilePageType = initialState, action: ActionTyp
                 message: state.newPostText,
                 likesCount: 0
             };
-            state.posts.unshift(newPost);
-            state.newPostText = '';
-            return state;
+            return {
+                ...state,
+                newPostText: '',
+                posts: [newPost, ...state.posts]
+            };
         case 'UPDATE-NEW-POST-TEXT':
-            state.newPostText = action.newText;
-            return state;
+            return {
+                ...state,
+                newPostText: action.newText
+            };
         default:
             return state;
     }
-}
+};
 
 export default profileReducer;

@@ -2,19 +2,13 @@ import React from 'react';
 import s from './Dialogs.module.css';
 import {DialogItem} from "./DialogItem";
 import {MessageItem} from "./MessageItem";
-import {DialogPageType} from "../../Redux/store";
-
-type DialogsPropsType = {
-    dialogsPage: DialogPageType,
-    addMessage: () => void,
-    updateNewMessageText: (newText: string) => void,
-};
+import {DialogsPropsType} from "./DialogsContainer";
 
 const Dialogs = (props: DialogsPropsType) => {
 
     let state = props.dialogsPage
-    let dialogsElement = state.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>);
-    let messagesElement = state.messages.map(m => <MessageItem message={m.message}/>);
+    let dialogsElement = state.dialogs.map(d => <DialogItem key={d.id} name={d.name} id={d.id}/>);
+    let messagesElement = state.messages.map(m => <MessageItem key={m.id} message={m.message}/>);
     let NewMessageElement = React.createRef<HTMLTextAreaElement>();
     let onClickHandler = () => {
         props.addMessage();
