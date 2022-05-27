@@ -10,8 +10,8 @@ export type DialogType = {
     name: string,
 };
 export type DialogPageType = typeof initialState;
-export const addMessageAC = () => ({type: 'ADD-MESSAGE'} as const);
-export const updateNewMessageTextAC = (newText: string) => ({type: 'UPDATE-NEW-MESSAGE-TEXT', newText: newText} as const);
+export const addMessage = () => ({type: 'ADD-MESSAGE'} as const);
+export const updateNewMessageText = (newText: string) => ({type: 'UPDATE-NEW-MESSAGE-TEXT', newText: newText} as const);
 
 let initialState = {
     dialogs: [

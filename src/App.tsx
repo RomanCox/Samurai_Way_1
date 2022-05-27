@@ -2,13 +2,13 @@ import React from 'react';
 import './App.css';
 import Header from "./Components/Header/Header";
 import Navbar from "./Components/Navbar/Navbar";
-import Profile from "./Components/Profile/Profile";
 import {Route, Switch} from "react-router-dom";
 import Music from './Components/Music/Music';
 import News from './Components/News/News';
 import Settings from './Components/Settings/Settings';
 import DialogsContainer from "./Components/Dialogs/DialogsContainer";
 import UsersContainer from "./Components/Users/UsersContainer";
+import ProfileContainer from "./Components/Profile/ProfileContainer";
 
 const App = () => {
     return (
@@ -17,7 +17,7 @@ const App = () => {
                 <Navbar/>
                 <div className='app-wrapper-content'>
                     <Switch>
-                        <Route path={'/profile'} render={() => <Profile />}/>
+                        <Route path={'/profile'} render={() => <ProfileContainer />}/>
                         <Route path={'/dialogs'} render={() => <DialogsContainer />}/>
                         <Route path={'/news'} render={() => <News />}/>
                         <Route path={'/music'} render={() => <Music />}/>

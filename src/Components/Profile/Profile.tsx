@@ -1,18 +1,17 @@
 import React from 'react'
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
+import ProfileInfo from "./ProfileInfo";
+import {ProfileType} from "../../Redux/profileReducer";
 
-const Profile = () => {
+type ProfilePropsType = {
+    profile: ProfileType,
+}
+
+const Profile = (props: ProfilePropsType) => {
     return (
         <div>
-            <div>
-                <img src='https://www.industrialempathy.com/img/remote/ZiClJf-640w.avif' alt=''/>
-            </div>
-            <div>
-                ava + description
-            </div>
-            <div>
-                <MyPostsContainer />
-            </div>
+            <ProfileInfo profile={props.profile}/>
+            <MyPostsContainer />
         </div>
     )
 }
