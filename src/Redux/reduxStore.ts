@@ -10,6 +10,7 @@ import usersReducer, {
     setUsers,
     unfollow
 } from "./usersReducer";
+import authReducer, {setAuthPhoto, setAuthUserData} from "./authReducer";
 
 export type ActionType = ReturnType<typeof addPost> |
     ReturnType<typeof updateNewPostText> |
@@ -21,13 +22,16 @@ export type ActionType = ReturnType<typeof addPost> |
     ReturnType<typeof setCurrentPage> |
     ReturnType<typeof setTotalUsersCount> |
     ReturnType<typeof toggleIsFetching> |
-    ReturnType<typeof setUserProfile>
+    ReturnType<typeof setUserProfile> |
+    ReturnType<typeof setAuthUserData> |
+    ReturnType<typeof setAuthPhoto>
 
 export const rootReducer = combineReducers({
     profilePage: profileReducer,
     dialogsPage: dialogsReducer,
     sidebar: sidebarReducer,
     usersPage: usersReducer,
+    auth: authReducer,
 });
 
 let store = createStore(rootReducer);

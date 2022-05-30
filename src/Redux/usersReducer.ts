@@ -1,5 +1,4 @@
 import {ActionType} from "./reduxStore";
-import {ProfileType} from "./profileReducer";
 
 export type UsersPageType = typeof initialState;
 type LocationType = {

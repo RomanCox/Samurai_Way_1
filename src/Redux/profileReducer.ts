@@ -30,10 +30,10 @@ export type ProfileType = {
     lookingForAJobDescription: string,
     photos: PhotosType,
     userId: number,
-}
+} | null
 export const addPost = () => ({type: 'ADD-POST'} as const);
 export const updateNewPostText = (newText: string) => ({type: 'UPDATE-NEW-POST-TEXT', newText: newText} as const);
-export const setUserProfile = (profile: any) => ({type: 'SET-USER-PROFILE', profile} as const);
+export const setUserProfile = (profile: ProfileType) => ({type: 'SET-USER-PROFILE', profile} as const);
 
 let initialState = {
     posts: [
@@ -43,7 +43,7 @@ let initialState = {
         {id: uuidv4(), message: 'DaDa', likesCount: 11}
     ] as Array<PostType>,
     newPostText: '',
-    profile: null,
+    profile: null as ProfileType,
 };
 
 const profileReducer = (state: ProfilePageType = initialState, action: ActionType): ProfilePageType => {
