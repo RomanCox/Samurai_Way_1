@@ -1,8 +1,8 @@
 import React from 'react';
 import s from './Header.module.css';
 import logo from '../../assets/images/logo.jpg'
-import {NavLink} from "react-router-dom";
-import {MapStateToPropsType} from "./HeaderContainer";
+import {NavLink} from 'react-router-dom';
+import {MapStateToPropsType} from './HeaderContainer';
 
 type HeaderPropsType = MapStateToPropsType & {
     photo: string,

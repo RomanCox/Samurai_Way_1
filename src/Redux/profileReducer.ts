@@ -1,5 +1,6 @@
 import {v4 as uuidv4} from "uuid";
 import {ActionType} from "./reduxStore";
+import {profileAPI} from "../api/api";
 
 export type PostType = {
     id: string,
@@ -18,7 +19,7 @@ type ContactsType = {
     website: string | null,
     youtube: string | null,
 }
-type PhotosType = {
+export type PhotosType = {
     small: string,
     large: string,
 }
@@ -74,5 +75,13 @@ const profileReducer = (state: ProfilePageType = initialState, action: ActionTyp
             return state;
     }
 };
+
+export const getProfile = (userId: number) => {
+    return (dispatch: any) => {
+        profileAPI.getUserProfile(userId).then(data => {
+            dispatch(setUserProfile(data));
+        });
+    }
+}
 
 export default profileReducer;

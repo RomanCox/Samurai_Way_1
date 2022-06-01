@@ -1,4 +1,5 @@
 import {ActionType} from "./reduxStore";
+import {authAPI, profileAPI} from "../api/api";
 
 export type AuthUserType = typeof initialState;
 
@@ -26,5 +27,18 @@ const authReducer = (state: AuthUserType = initialState, action: ActionType): Au
             return state;
     }
 };
+
+export const getAuthUserData = () => {
+    return (dispatch: any) => {
+        authAPI.me().then(data => {
+            if (data.resultCode === 0) {
+                dispatch(setAuthUserData(data.data.id, data.data.email, data.data.login));
+                profileAPI.getProfilePhoto(data.data.id).then(data => {
+                    dispatch(setAuthPhoto(data.photos.small));
+                });
+            }
+        });
+    }
+}
 
 export default authReducer;

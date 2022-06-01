@@ -1,40 +1,41 @@
 import React from 'react'
 import Profile from "./Profile";
-import axios from "axios";
 import {connect} from "react-redux";
 import {ActionType, AppStateType} from "../../Redux/reduxStore";
-import {ProfileType, setUserProfile} from "../../Redux/profileReducer";
+import {getProfile, ProfileType} from "../../Redux/profileReducer";
 import {withRouter} from "react-router-dom";
+import withAuthRedirect from "../../hoc/withAuthRedirect";
 
 type MapStateToPropsType = {
     profile: ProfileType,
+    isAuth: boolean,
 }
 
 type ProfileContainerProps = MapStateToPropsType & {
     setUserProfile: (profile: ProfileType) => ActionType
 }
 
-class ProfileContainer extends React.Component</*ProfileContainerProps*/ any, AppStateType> {
+class ProfileContainer extends React.Component<any, AppStateType> {
 
     componentDidMount() {
         let userId = this.props.match.params.userId;
         if (!userId) {
             userId = 2;
         }
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`).then(response => {
-            this.props.setUserProfile(response.data);
-        });
+        this.props.getProfile(userId);
     }
 
     render = () => {
-        return <Profile {...this.props} profile={this.props.profile}/>
+        return <Profile profile={this.props.profile} isAuth={this.props.isAuth}/>
     }
 }
 
-let MapStateToProps = (state: AppStateType): MapStateToPropsType => ({
+let AuthRedirectComponent = withAuthRedirect(ProfileContainer);
+
+let MapStateToProps = (state: AppStateType) => ({
     profile: state.profilePage.profile,
 });
 
-let withUrlContainerComponent = withRouter(ProfileContainer)
+let withUrlContainerComponent = withRouter(AuthRedirectComponent)
 
-export default connect(MapStateToProps, {setUserProfile})(withUrlContainerComponent);
+export default connect(MapStateToProps, {getProfile})(withUrlContainerComponent);
