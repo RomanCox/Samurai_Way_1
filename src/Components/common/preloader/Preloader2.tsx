@@ -10,11 +10,11 @@ const Preloader2 = () => {
                     <div className={style.pacmanInner}></div>
                 </div>
             </div>
-            <div className={`${style.pacman} ${style.pacmanMirror}`}>
+            {/*<div className={`${style.pacman} ${style.pacmanMirror}`}>
                 <div className={style.pacmanMask}>
                     <div className={style.pacmanInner}></div>
                 </div>
-            </div>
+            </div>*/}
             <div className={`${style.food} ${style.food1}`}></div>
             <div className={`${style.food} ${style.food2}`}></div>
             <div className={`${style.food} ${style.food3}`}></div>

@@ -3,12 +3,12 @@ import style from './MyButton.module.css'
 
 type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 
-type AlternativeSuperButtonPropsType = DefaultButtonPropsType & {
+type MyButtonPropsType = DefaultButtonPropsType & {
     textColor?: string,
     disabled?: boolean,
 }
 
-const MyButton: React.FC<AlternativeSuperButtonPropsType> = (
+const MyButton: React.FC<MyButtonPropsType> = (
     {
         textColor, disabled,
         ...restProps// все остальные пропсы попадут в объект restProps, там же будет children

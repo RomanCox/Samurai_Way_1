@@ -1,3 +1,9 @@
+.usersContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
 .container {
     width: 100%;
     display: flex;
@@ -35,10 +41,6 @@
     color: #2dff00;
 }
 
-.disabledArrow:hover {
-    color: #ff0007;
-}
-
 .disabledArrow:active {
     color: #ff0007;
 }
@@ -60,13 +62,18 @@
     transition: 0.5s ease-in-out;
 }
 
-.bg {
+.circle {
     cursor: pointer;
 }
 
-.page:hover, .bg:hover {
+.page:hover, .circle:hover {
     stroke: #2dff00;
     stroke-dashoffset: 0;
+}
+
+.circleError:hover, arrow:active {
+    stroke: #ff0007;
+    color: #ff0007;
 }
 
 .usersContainer {

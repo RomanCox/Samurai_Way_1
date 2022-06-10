@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import style from './Users.module.css'
 import userPhoto from '../../assets/images/user.png'
 import {NavLink} from 'react-router-dom';
-import {setCurrentPage, UserType} from "../../Redux/usersReducer";
+import {UserType} from "../../Redux/usersReducer";
 import MyButton from "../common/button/MyButton";
 
 type UsersPropsType = {
@@ -20,16 +20,26 @@ const Users = (props: UsersPropsType) => {
 
     const [leftDisabled, setLeftDisabled] = useState<boolean>(true);
     const [rightDisabled, setRightDisabled] = useState<boolean>(false);
-    /*if (props.currentPage === 1) {
-        setLeftDisabled(true)
-    } else {
-        setLeftDisabled(false)
+
+    const leftArrowClickHandler = () => {
+        if (props.currentPage <= 1) {
+            setLeftDisabled(true)
+        } else {
+            setLeftDisabled(false)
+            setRightDisabled(false)
+            props.onPageChanged(props.currentPage - 1)
+        }
+    };
+
+    const rightArrowClickHandler = () => {
+        if (props.currentPage >= props.totalItemsCount) {
+            setRightDisabled(true)
+        } else {
+            setRightDisabled(false)
+            setLeftDisabled(false)
+            props.onPageChanged(props.currentPage + 1)
+        }
     }
-    if (props.currentPage === props.totalItemsCount) {
-        setRightDisabled(true)
-    } else {
-        setRightDisabled(false)
-    }*/
 
     let pagesCount = Math.ceil(props.totalItemsCount / props.pageSize);
     let pages: Array<number[]> = [];
@@ -60,7 +70,7 @@ const Users = (props: UsersPropsType) => {
                          props.onPageChanged(pageNumber)
                      }}>
                     <svg width="50px" height="80px" viewBox="0 0 50 50" className={style.svg}>
-                        <circle className={style.bg} cx="26" cy="13" r="20"/>
+                        <circle className={style.circle} cx="26" cy="13" r="20"/>
                     </svg>
                     {pageNumber}
                 </div>
@@ -68,25 +78,24 @@ const Users = (props: UsersPropsType) => {
         })
     };
 
-    let leftArrowStyle = `${style.page} ${style.arrow} ${leftDisabled ? style.disabledArrow : ''}`
+    const leftArrowStyle = `${style.page} ${style.arrow} ${props.currentPage <= 1 ? style.disabledArrow : ''}`;
+    const leftArrowCircleStyle = `${style.circle} ${props.currentPage <= 1 ? style.circleError : ''}`;
+    const rightArrowStyle = `${style.page} ${style.arrow} ${props.currentPage >= props.totalItemsCount ? style.disabledArrow : ''}`;
+    const rightArrowCircleStyle = `${style.circle} ${props.currentPage >= props.totalItemsCount ? style.circleError : ''}`;
 
     return (
         <div className={style.container}>
             <div className={style.paginationContainer}>
-                <span className={leftArrowStyle} onClick={() => {
-                    props.onPageChanged(props.currentPage - 1)
-                }}>
+                <span className={leftArrowStyle} onClick={leftArrowClickHandler}>
                     <svg width="50px" height="80px" viewBox="0 0 50 50" className={style.svg}>
-                        <circle className={style.bg} cx="26" cy="17" r="20"/>
+                        <circle className={leftArrowCircleStyle} cx="26" cy="17" r="20"/>
                     </svg>
                     &laquo;
                 </span>
                 {renderPages}
-                <span className={`${style.page} ${style.arrow}`} onClick={() => {
-                    props.onPageChanged(props.currentPage + 1)
-                }}>
+                <span className={rightArrowStyle} onClick={rightArrowClickHandler}>
                     <svg width="50px" height="80px" viewBox="0 0 50 50" className={style.svg}>
-                        <circle className={style.bg} cx="26" cy="17" r="20"/>
+                        <circle className={rightArrowCircleStyle} cx="26" cy="17" r="20"/>
                     </svg>
                     &raquo;</span>
             </div>

@@ -11,7 +11,7 @@ import UsersContainer from './Components/Users/UsersContainer';
 import ProfileContainer from './Components/Profile/ProfileContainer';
 import HeaderContainer from './Components/Header/HeaderContainer';
 import Login from './Components/Login/Login';
-import Preloader from "./Components/common/preloader/Preloader";
+import Preloader2 from "./Components/common/preloader/Preloader2";;
 
 const App = () => {
     return (
@@ -30,7 +30,7 @@ const App = () => {
                         <Route path={'/settings'} render={() => <Settings/>}/>
                         <Route path={'/users'} render={() => <UsersContainer/>}/>
                         <Route path={'/login'} render={() => <Login/>}/>
-                        <Route path={'/temp'} render={() => <Preloader/>}/>
+                        <Route path={'/temp'} render={() => <Preloader2/>}/>
                     </Switch>
                 </div>
             </div>
