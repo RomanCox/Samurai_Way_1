@@ -1,12 +1,13 @@
 import React from 'react';
-import {connect} from "react-redux";
-import Users from "./Users";
-import {ActionType, AppStateType} from "../../Redux/reduxStore";
+import {connect} from 'react-redux';
+import Users from './Users';
+import {ActionType, AppStateType} from '../../Redux/reduxStore';
 import {
     setCurrentPage,
     UsersPageType,
     getUsers, follow, unfollow
-} from "../../Redux/usersReducer";
+} from '../../Redux/usersReducer';
+import Preloader2 from '../common/preloader/Preloader2';
 import Preloader from "../common/preloader/Preloader";
 
 type mapStateToPropsType = UsersPageType;
@@ -30,12 +31,14 @@ class UsersContainer extends React.Component<UsersContainerProps, AppStateType> 
     };
 
     render = () => {
-        return <>
+        return (
+            <>
+            {/*{this.props.isFetching ? <Preloader2/> : null}*/}
             {this.props.isFetching ? <Preloader/> : null}
             <Users
                 users={this.props.users}
                 onPageChanged={this.onPageChanged}
-                totalUsersCount={this.props.totalUsersCount}
+                totalItemsCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
                 currentPage={this.props.currentPage}
                 followingInProgress={this.props.followingInProgress}
@@ -43,6 +46,7 @@ class UsersContainer extends React.Component<UsersContainerProps, AppStateType> 
                 unfollow={this.props.unfollow}
             />
         </>
+        )
     }
 }
 

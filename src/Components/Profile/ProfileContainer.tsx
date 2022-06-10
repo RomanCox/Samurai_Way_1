@@ -1,18 +1,22 @@
 import React from 'react'
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {ActionType, AppStateType} from "../../Redux/reduxStore";
-import {getProfile, ProfileType} from "../../Redux/profileReducer";
+import {AppStateType} from "../../Redux/reduxStore";
+import {getProfile, getStatus, ProfileType, updateStatus} from "../../Redux/profileReducer";
 import {withRouter} from "react-router-dom";
 import withAuthRedirect from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 type MapStateToPropsType = {
     profile: ProfileType,
     isAuth: boolean,
+    status: string,
+    updateStatus: (status: string) => void,
 }
 
 type ProfileContainerProps = MapStateToPropsType & {
-    setUserProfile: (profile: ProfileType) => ActionType
+    getStatus: (id: number) => void,
+    getProfile: (id: number) => void,
 }
 
 class ProfileContainer extends React.Component<any, AppStateType> {
@@ -20,22 +24,24 @@ class ProfileContainer extends React.Component<any, AppStateType> {
     componentDidMount() {
         let userId = this.props.match.params.userId;
         if (!userId) {
-            userId = 2;
+            userId = 21746;
         }
         this.props.getProfile(userId);
+        this.props.getStatus(userId);
     }
 
     render = () => {
-        return <Profile profile={this.props.profile} isAuth={this.props.isAuth}/>
+        return <Profile profile={this.props.profile} isAuth={this.props.isAuth} status={this.props.status} updateStatus={this.props.updateStatus}/>
     }
 }
 
-let AuthRedirectComponent = withAuthRedirect(ProfileContainer);
-
 let MapStateToProps = (state: AppStateType) => ({
     profile: state.profilePage.profile,
+    status: state.profilePage.status,
 });
 
-let withUrlContainerComponent = withRouter(AuthRedirectComponent)
-
-export default connect(MapStateToProps, {getProfile})(withUrlContainerComponent);
+export default compose<React.ComponentType>(
+    connect(MapStateToProps, {getProfile, getStatus, updateStatus}),
+    withRouter,
+    /*withAuthRedirect*/
+)(ProfileContainer);

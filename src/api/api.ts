@@ -7,19 +7,19 @@ const instance = axios.create({
 });
 
 export const usersAPI = {
-    getUsers (currentPage: number, pageSize: number) {
+    getUsers(currentPage: number, pageSize: number) {
         return instance.get(`users?page=${currentPage}&count=${pageSize}`)
             .then(response => {
                 return response.data
             });
     },
-    followUser (id: number) {
+    followUser(id: number) {
         return instance.post(`follow/${id}`)
             .then(response => {
                 return response.data
             });
     },
-    unFollowUser (id: number) {
+    unFollowUser(id: number) {
         return instance.delete(`follow/${id}`)
             .then(response => {
                 return response.data
@@ -28,23 +28,43 @@ export const usersAPI = {
 };
 
 export const profileAPI = {
-    getUserProfile (id: number) {
+    getUserProfile(id: number) {
         return instance.get(`profile/${id}`)
             .then(response => {
                 return response.data
             });
     },
-    getProfilePhoto (id: number) {
+    getProfilePhoto(id: number) {
         return instance.get(`profile/${id}`).then(response => {
             return response.data
-        })
-    }
+        });
+    },
+    getStatus(id: number) {
+        return instance.get(`profile/status/${id}`).then(response => {
+            return response.data
+        });
+    },
+    updateStatus(status: string) {
+        return instance.put(`profile/status`, { status: status }).then(response => {
+            return response.data
+        });
+    },
 };
 
 export const authAPI = {
-    me () {
+    me() {
         return instance.get(`auth/me`).then(response => {
             return response.data
-        })
+        });
     },
+    login(email: string, password: string, rememberMe: boolean = false) {
+        return instance.post(`auth/login`, {email, password, rememberMe}).then(response =>{
+            return response.data
+        });
+    },
+    logout() {
+        return instance.delete(`auth/login`).then(response =>{
+            return response.data
+        });
+    }
 }

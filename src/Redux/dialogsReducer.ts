@@ -1,5 +1,5 @@
-import {v4 as uuidv4} from "uuid";
-import {ActionType} from "./reduxStore";
+import {v4 as uuidv4} from 'uuid';
+import {ActionType} from './reduxStore';
 
 export type MessageType = {
     id: string,
@@ -10,8 +10,7 @@ export type DialogType = {
     name: string,
 };
 export type DialogPageType = typeof initialState;
-export const addMessage = () => ({type: 'ADD-MESSAGE'} as const);
-export const updateNewMessageText = (newText: string) => ({type: 'UPDATE-NEW-MESSAGE-TEXT', newText: newText} as const);
+export const sendMessage = (newMessageBody: any) => ({type: 'SEND-MESSAGE', newMessageBody} as const);
 
 let initialState = {
     dialogs: [
@@ -29,26 +28,18 @@ let initialState = {
         {id: uuidv4(), message: 'Yo'},
         {id: uuidv4(), message: 'Yo'}
     ] as Array<MessageType>,
-    newMessageText: '',
 };
 
 const dialogsReducer = (state: DialogPageType = initialState, action: ActionType): DialogPageType => {
     switch (action.type) {
-        case 'ADD-MESSAGE': {
+        case 'SEND-MESSAGE': {
             let newMessage = {
                 id: uuidv4(),
-                message: state.newMessageText,
+                message: action.newMessageBody,
             };
             return {
                 ...state,
-                newMessageText: '',
                 messages: [...state.messages, newMessage]
-            };
-        }
-        case 'UPDATE-NEW-MESSAGE-TEXT': {
-            return {
-                ...state,
-                newMessageText: action.newText,
             };
         }
         default:

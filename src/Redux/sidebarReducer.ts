@@ -1,4 +1,4 @@
-import {ActionType} from "./reduxStore";
+import {ActionType} from './reduxStore';
 
 export type SidebarType = {}
 

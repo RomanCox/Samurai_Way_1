@@ -1,6 +1,7 @@
-import {v4 as uuidv4} from "uuid";
-import {ActionType} from "./reduxStore";
-import {profileAPI} from "../api/api";
+import {v4 as uuidv4} from 'uuid';
+import {ActionType} from './reduxStore';
+import {profileAPI} from '../api/api';
+import {Dispatch} from 'redux';
 
 export type PostType = {
     id: string,
@@ -32,9 +33,9 @@ export type ProfileType = {
     photos: PhotosType,
     userId: number,
 } | null
-export const addPost = () => ({type: 'ADD-POST'} as const);
-export const updateNewPostText = (newText: string) => ({type: 'UPDATE-NEW-POST-TEXT', newText: newText} as const);
+export const addPost = (newPostBody: any) => ({type: 'ADD-POST', newPostBody} as const);
 export const setUserProfile = (profile: ProfileType) => ({type: 'SET-USER-PROFILE', profile} as const);
+export const setStatus = (status: string) => ({type: 'SET-STATUS', status} as const);
 
 let initialState = {
     posts: [
@@ -43,8 +44,8 @@ let initialState = {
         {id: uuidv4(), message: 'BlaBla', likesCount: 11},
         {id: uuidv4(), message: 'DaDa', likesCount: 11}
     ] as Array<PostType>,
-    newPostText: '',
     profile: null as ProfileType,
+    status: '',
 };
 
 const profileReducer = (state: ProfilePageType = initialState, action: ActionType): ProfilePageType => {
@@ -53,23 +54,22 @@ const profileReducer = (state: ProfilePageType = initialState, action: ActionTyp
         case 'ADD-POST':
             let newPost = {
                 id: uuidv4(),
-                message: state.newPostText,
+                message: action.newPostBody,
                 likesCount: 0
             };
             return {
                 ...state,
-                newPostText: '',
                 posts: [newPost, ...state.posts]
-            };
-        case 'UPDATE-NEW-POST-TEXT':
-            return {
-                ...state,
-                newPostText: action.newText
             };
         case 'SET-USER-PROFILE':
             return {
                 ...state,
                 profile: action.profile
+            };
+        case 'SET-STATUS':
+            return {
+                ...state,
+                status: action.status
             };
         default:
             return state;
@@ -77,11 +77,29 @@ const profileReducer = (state: ProfilePageType = initialState, action: ActionTyp
 };
 
 export const getProfile = (userId: number) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<ActionType>) => {
         profileAPI.getUserProfile(userId).then(data => {
             dispatch(setUserProfile(data));
         });
     }
-}
+};
+
+export const getStatus = (userId: number) => {
+    return (dispatch: Dispatch<ActionType>) => {
+        profileAPI.getStatus(userId).then(data => {
+            dispatch(setStatus(data));
+        });
+    }
+};
+
+export const updateStatus = (status: string) => {
+    return (dispatch: Dispatch<ActionType>) => {
+        profileAPI.updateStatus(status).then(data => {
+            if (data.resultCode === 0) {
+            dispatch(setStatus(status))
+            }
+        });
+    }
+};
 
 export default profileReducer;

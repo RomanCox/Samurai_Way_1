@@ -1,5 +1,6 @@
-import {ActionType} from "./reduxStore";
-import {usersAPI} from "../api/api";
+import {ActionType} from './reduxStore';
+import {usersAPI} from '../api/api';
+import {Dispatch} from 'redux';
 
 export type UsersPageType = typeof initialState;
 type LocationType = {
@@ -89,18 +90,19 @@ const usersReducer = (state: UsersPageType = initialState, action: ActionType): 
 };
 
 export const getUsers = (currentPage: number, pageSize: number) => {
-    return (dispatch: (arg0: any) => void) => {
+    return (dispatch: Dispatch<ActionType>) => {
         dispatch(toggleIsFetching(true));
         usersAPI.getUsers(currentPage, pageSize).then(data => {
             dispatch(toggleIsFetching(false));
             dispatch(setUsers(data.items));
+            dispatch(setCurrentPage(currentPage))
             dispatch(setTotalUsersCount(data.totalCount));
         });
     }
 };
 
 export const follow = (userId: number) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<ActionType>) => {
         dispatch(toggleFollowingInProgress(true, userId));
         usersAPI.followUser(userId).then(data => {
             if (data.resultCode === 0) {
@@ -112,7 +114,7 @@ export const follow = (userId: number) => {
 };
 
 export const unfollow = (userId: number) => {
-    return (dispatch: (arg0: any) => void) => {
+    return (dispatch: Dispatch<ActionType>) => {
         dispatch(toggleFollowingInProgress(true, userId));
         usersAPI.unFollowUser(userId).then(data => {
             if (data.resultCode === 0) {

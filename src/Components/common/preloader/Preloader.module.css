@@ -1,0 +1,49 @@
+.container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.svg {
+    width: 80px;
+    height: 80px;
+}
+
+.bg {
+    fill: none;
+    stroke-width: 2px;
+    stroke: #0058ff;
+    stroke-dasharray: 295;
+}
+
+.loader {
+    fill: none;
+    stroke-width: 3px;
+    stroke: #434343;
+    stroke-dasharray: 144;
+    transform-origin: 50% 50%;
+    animation: line 5s linear infinite, spin 3s linear infinite;
+}
+
+@keyframes line {
+    0% {
+        stroke-dashoffset: 576;
+    }
+
+    100% {
+        stroke-dashoffset: 288;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(-90deg) translate3d(0, 0, 0);
+    }
+
+    100% {
+        transform: rotate(270deg) translate3d(0, 0, 0);
+    }
+}

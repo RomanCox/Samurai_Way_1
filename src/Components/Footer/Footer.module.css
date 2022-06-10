@@ -1,0 +1,5 @@
+.footerContainer {
+    grid-area: foot;
+    background-color: #434343;
+    height: 10vh;
+}
